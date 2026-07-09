@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Xkd4QUHQbHk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Promatrice\\Documents\\learn_c_sharp\\MonJeu\\MonJeu.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Promatrice\\.nuget\\packages\\raylib-cs\\8.0.0\\raylib-cs.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
