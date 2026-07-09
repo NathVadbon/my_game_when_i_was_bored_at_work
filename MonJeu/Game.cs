@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class Game
 {
+    enum GamePhase { Menu, Playing }
+
     const int Width = 800;
     const int Height = 450;
 
@@ -52,6 +54,7 @@ public class Game
     float rainbowTimer = 0f;
 
     bool isGameOver = false;
+    GamePhase phase = GamePhase.Menu;
 
     int playerScore = 0;
     Color scoreColor = Color.White;
@@ -91,7 +94,6 @@ public class Game
 
         highScoreFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MonJeu", "highscore.txt");
         LoadHighScore();
-        AddEnemy();
     }
 
     void InitializePlayerHealth()
@@ -175,18 +177,31 @@ public class Game
 
         while (!Raylib.WindowShouldClose())
         {
-            if (!isGameOver)
+            float dt = Raylib.GetFrameTime();
+
+            if (phase == GamePhase.Menu)
             {
-                ++frameCount;
-                float dt = Raylib.GetFrameTime();
-                UpdateGameState(dt);
+                if (Raylib.IsKeyPressed(KeyboardKey.Enter) || Raylib.IsKeyPressed(KeyboardKey.Space) || Raylib.IsMouseButtonPressed(MouseButton.Left))
+                {
+                    StartGame();
+                }
+
+                DrawMenu();
             }
-
-            Draw();
-
-            if (isGameOver && Raylib.IsMouseButtonPressed(MouseButton.Left))
+            else
             {
-                Restart();
+                if (!isGameOver)
+                {
+                    ++frameCount;
+                    UpdateGameState(dt);
+                }
+
+                Draw();
+
+                if (isGameOver && (Raylib.IsMouseButtonPressed(MouseButton.Left) || Raylib.IsKeyPressed(KeyboardKey.Enter) || Raylib.IsKeyPressed(KeyboardKey.Space)))
+                {
+                    Restart();
+                }
             }
         }
 
@@ -426,6 +441,31 @@ public class Game
         }
     }
 
+    void DrawMenu()
+    {
+        Raylib.BeginDrawing();
+        Raylib.ClearBackground(Color.Black);
+
+        Raylib.DrawText("MON JEU", 250, 90, 60, Color.White);
+        Raylib.DrawText("Escape the triangle storm", 220, 160, 28, Color.SkyBlue);
+        Raylib.DrawText("Controls: Arrow keys to move", 220, 210, 24, Color.White);
+        Raylib.DrawText("Collect coins, hearts and shields", 200, 245, 24, Color.LightGray);
+        Raylib.DrawText("Press Enter, Space or click to start", 180, 320, 24, Color.Gold);
+        Raylib.DrawText("High score: " + highScore, 280, 370, 24, Color.Gold);
+
+        Raylib.DrawRectangle(120, 120, 25, 25, Color.Red);
+        Raylib.DrawTriangle(new Vector2(160, 120), new Vector2(145, 145), new Vector2(175, 145), Color.White);
+        Raylib.DrawCircle(640, 140, 18, Color.Gold);
+        Raylib.DrawRectangle(610, 210, 24, 24, Color.SkyBlue);
+
+        Raylib.EndDrawing();
+    }
+
+    void StartGame()
+    {
+        Restart();
+    }
+
     void Draw()
     {
         Raylib.BeginDrawing();
@@ -599,6 +639,7 @@ public class Game
 
     void Restart()
     {
+        phase = GamePhase.Playing;
         player = new Vector2(400, 225);
         livesIndex = 2;
         playerHealthColors[0] = Color.White;
