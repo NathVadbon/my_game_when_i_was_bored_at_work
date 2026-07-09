@@ -53,13 +53,10 @@ public class Game
 
     bool isGameOver = false;
 
-    bool showRestart = true;
-    float restartTimer = 0f;
-
     int playerScore = 0;
     Color scoreColor = Color.White;
     int highScore = 0;
-    string highScoreFilePath = null;
+    string highScoreFilePath = string.Empty;
 
     Vector2 player = new Vector2(400, 225);
     Color playerColor = Color.White;

@@ -20,3 +20,4 @@ C:\Users\Promatrice\Documents\learn_c_sharp\MonJeu\obj\Debug\net9.0\refint\MonJe
 C:\Users\Promatrice\Documents\learn_c_sharp\MonJeu\obj\Debug\net9.0\MonJeu.pdb
 C:\Users\Promatrice\Documents\learn_c_sharp\MonJeu\obj\Debug\net9.0\MonJeu.genruntimeconfig.cache
 C:\Users\Promatrice\Documents\learn_c_sharp\MonJeu\obj\Debug\net9.0\ref\MonJeu.dll
+C:\Users\Promatrice\Documents\learn_c_sharp\MonJeu\obj\Debug\net9.0\MonJeu.sourcelink.json
