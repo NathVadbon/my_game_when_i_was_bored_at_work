@@ -52,6 +52,8 @@ public class Game
 
     float invincibilite = 0f;
     float rainbowTimer = 0f;
+    float hitFlashTimer = 0f;
+    const float hitFlashDuration = 0.35f;
 
     bool isGameOver = false;
     GamePhase phase = GamePhase.Menu;
@@ -107,6 +109,7 @@ public class Game
     {
         invincibilite -= dt;
         UpdateRainbowTimer(dt);
+        UpdateHitFlash(dt);
         spawnCooldownTimer -= dt;
         if (spawnCooldownTimer < 0f) spawnCooldownTimer = 0f;
 
@@ -128,6 +131,15 @@ public class Game
         {
             rainbowTimer -= dt;
             if (rainbowTimer <= 0f) rainbowTimer = 0f;
+        }
+    }
+
+    void UpdateHitFlash(float dt)
+    {
+        if (hitFlashTimer > 0f)
+        {
+            hitFlashTimer -= dt;
+            if (hitFlashTimer < 0f) hitFlashTimer = 0f;
         }
     }
 
@@ -496,7 +508,17 @@ public class Game
     void DrawPlayer()
     {
         playerColor = GetPlayerColor();
-        Raylib.DrawRectangle((int)player.X, (int)player.Y, playerWidth, playerHeight, playerColor);
+
+        Vector2 drawnPosition = player;
+        if (hitFlashTimer > 0f)
+        {
+            float shake = 2f;
+            drawnPosition.X += (float)(rng.NextDouble() * 2 - 1) * shake;
+            drawnPosition.Y += (float)(rng.NextDouble() * 2 - 1) * shake;
+            playerColor = Color.Red;
+        }
+
+        Raylib.DrawRectangle((int)drawnPosition.X, (int)drawnPosition.Y, playerWidth, playerHeight, playerColor);
     }
 
     Color GetPlayerColor()
@@ -696,6 +718,7 @@ public class Game
         {
             playerHealthColors[livesIndex] = Color.Black;
             livesIndex--;
+            hitFlashTimer = hitFlashDuration;
         }
         if (livesIndex < 0)
         {
